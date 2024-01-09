@@ -1,6 +1,6 @@
-import { getBingCookies } from './utils'
 import { onMessage } from 'webext-bridge/background'
 import { CloseTabMessage } from '../types'
+import { getBingCookies } from '../utils'
 
 console.log('background is running')
 
