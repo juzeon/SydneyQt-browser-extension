@@ -2,7 +2,7 @@ import { defineManifest } from '@crxjs/vite-plugin'
 import packageData from '../package.json'
 
 export default defineManifest({
-  name: packageData.name,
+  name: 'SydneyQt Browser Extension',
   description: packageData.description,
   version: packageData.version,
   manifest_version: 3,

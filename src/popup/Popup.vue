@@ -1,6 +1,16 @@
 <script setup lang="ts">
-function openBingChat() {
-  chrome.tabs.create({ url: 'https://www.bing.com/search?q=Bing+AI&showconv=1', active: true })
+import { StorageItem } from 'webext-storage'
+
+async function openBingChat() {
+  let bingTabID = new StorageItem<number>('bingTabID')
+  let tab = await chrome.tabs.create({ url: 'https://www.bing.com/search?q=Bing+AI&showconv=1', active: true })
+  await bingTabID.set(tab.id!)
+}
+
+async function resolveCaptcha() {
+  let resolveCaptcha = new StorageItem<boolean>('resolveCaptcha')
+  await resolveCaptcha.set(true)
+  await openBingChat()
 }
 </script>
 
@@ -11,6 +21,7 @@ function openBingChat() {
       <v-card class="fill-height">
         <v-list>
           <v-list-item title="Open Bing Chat" @click="openBingChat"></v-list-item>
+          <v-list-item title="Resolve CAPTCHA" @click="resolveCaptcha"></v-list-item>
           <v-list-item title="Options"></v-list-item>
         </v-list>
       </v-card>

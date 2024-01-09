@@ -1,8 +1,10 @@
+import { sendMessage, onMessage } from 'webext-bridge/content-script'
 import './bing.css'
+import { StorageItem } from 'webext-storage'
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-class Bing {
+class ResolveCaptcha {
   cib: HTMLElement
   prompt: string = 'hi'
 
@@ -22,8 +24,10 @@ class Bing {
         .querySelector('#cib-chat-main > cib-chat-turn').shadowRoot
         .querySelector('cib-message-group.response-message-group')
     })
-    let tab = await chrome.tabs.getCurrent()
-    await chrome.tabs.remove(tab.id)
+    let bingTabID = new StorageItem<number>('bingTabID')
+    let id = await bingTabID.get()
+    await sendMessage('closeTab', { tabID: id }, 'background')
+    await bingTabID.remove()
     console.log('end of entrypoint')
   }
 
@@ -77,4 +81,12 @@ class Bing {
   }
 }
 
-new Bing().entrypoint()
+async function entrypoint() {
+  let resolveCaptcha = new StorageItem<boolean>('resolveCaptcha')
+  if (await resolveCaptcha.get()) {
+    await new ResolveCaptcha().entrypoint()
+    await resolveCaptcha.remove()
+  }
+}
+
+entrypoint()
