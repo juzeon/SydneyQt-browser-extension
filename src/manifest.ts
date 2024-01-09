@@ -17,7 +17,6 @@ export default defineManifest({
     default_icon: 'img/logo-48.png',
   },
   // options_page: 'options.html',
-  // devtools_page: 'devtools.html',
   background: {
     service_worker: 'src/background/index.ts',
     type: 'module',
@@ -28,9 +27,6 @@ export default defineManifest({
       js: ['src/contentScript/bing.ts'],
     },
   ],
-  // side_panel: {
-  //   default_path: 'sidepanel.html',
-  // },
   web_accessible_resources: [
     {
       resources: ['img/logo-16.png', 'img/logo-34.png', 'img/logo-48.png', 'img/logo-128.png'],
@@ -43,7 +39,4 @@ export default defineManifest({
     '*://127.0.0.1:*/*',
   ],
   permissions: ['storage', 'cookies'],
-  // chrome_url_overrides: {
-  //   newtab: 'newtab.html',
-  // },
 })
