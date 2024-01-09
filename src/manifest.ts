@@ -24,8 +24,8 @@ export default defineManifest({
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*'],
-      js: ['src/contentScript/index.ts'],
+      matches: ['*://*.bing.com/*', '*://copilot.microsoft.com/*'],
+      js: ['src/contentScript/bing.ts'],
     },
   ],
   // side_panel: {
@@ -39,6 +39,7 @@ export default defineManifest({
   ],
   host_permissions: [
     '*://*.bing.com/*',
+    '*://copilot.microsoft.com/*',
     '*://127.0.0.1:*/*',
   ],
   permissions: ['storage', 'cookies'],

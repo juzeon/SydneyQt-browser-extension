@@ -21,7 +21,8 @@
     "fmt": "prettier --write '**/*.{vue,ts,json,css,scss,md}'"
   },
   "dependencies": {
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuetify": "^3.4.9"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
