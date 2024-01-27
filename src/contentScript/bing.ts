@@ -20,14 +20,12 @@ class ResolveCaptcha {
     }
     await this.waitElement(() => {
       return this.cib.shadowRoot
-        .querySelector('#cib-conversation-main').shadowRoot
-        .querySelector('#cib-chat-main > cib-chat-turn').shadowRoot
-        .querySelector('cib-message-group.response-message-group')
+        ?.querySelector('#cib-conversation-main')?.shadowRoot
+        ?.querySelector('#cib-chat-main > cib-chat-turn')?.shadowRoot
+        ?.querySelector('cib-message-group.response-message-group')?.shadowRoot
+        ?.querySelector('cib-message[type=text]')?.shadowRoot
+        ?.querySelector('cib-shared > div.content div.ac-textBlock p')
     })
-    let bingTabID = new StorageItem<number>('bingTabID')
-    let id = await bingTabID.get()
-    await sendMessage('closeTab', { tabID: id }, 'background')
-    await bingTabID.remove()
     console.log('end of entrypoint')
   }
 
@@ -86,6 +84,10 @@ async function entrypoint() {
   if (await resolveCaptcha.get()) {
     await new ResolveCaptcha().entrypoint()
     await resolveCaptcha.remove()
+    let bingTabID = new StorageItem<number>('bingTabID')
+    let id = await bingTabID.get()
+    await bingTabID.remove()
+    await sendMessage('closeTab', { tabID: id }, 'background')
   }
 }
 
