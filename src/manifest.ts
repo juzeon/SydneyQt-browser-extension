@@ -27,16 +27,16 @@ export default defineManifest({
       js: ['src/contentScript/bing.ts'],
     },
   ],
-  web_accessible_resources: [
-    {
-      resources: [],
-      matches: [],
-    },
-  ],
+  // web_accessible_resources: [
+  //   {
+  //     resources: [],
+  //     matches: [],
+  //   },
+  // ],
   host_permissions: [
     '*://*.bing.com/*',
     '*://copilot.microsoft.com/*',
-    '*://127.0.0.1:*/*',
+    '*://127.0.0.1:61989/*',
   ],
-  permissions: ['storage', 'cookies'],
+  permissions: ['storage', 'cookies', 'webRequest'],
 })
