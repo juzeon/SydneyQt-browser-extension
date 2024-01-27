@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { StorageItem } from 'webext-storage'
 import { onMounted, ref } from 'vue'
+import { getBingCookies, toBackendURL } from '../utils'
+import { BingCookie } from '../types'
 
 async function openBingChat() {
   let bingTabID = new StorageItem<number>('bingTabID')
@@ -31,6 +33,28 @@ function checkCookieStatus() {
   })
 }
 
+let loadingUpdateCookies = ref(false)
+
+function updateCookies() {
+  loadingUpdateCookies.value = true
+  let cookies: BingCookie[]
+  getBingCookies().then(async (res) => {
+    cookies = res
+    return fetch(toBackendURL('/cookies'), {
+      method: 'POST',
+      body: JSON.stringify(res),
+    })
+  }).then(resp => {
+    if (resp.status === 200) {
+      alert('Updated ' + cookies.length + ' cookies.')
+    }
+  }).catch(err => {
+    alert(err)
+  }).finally(() => {
+    loadingUpdateCookies.value = false
+  })
+}
+
 enum CookieStatus {
   checking = 'Checking...',
   loggedIn = 'Logged In',
@@ -50,7 +74,7 @@ onMounted(() => {
       <p class="text-h6 text-center">SydneyQt Browser Extension</p>
       <div class="d-flex my-2 ml-2 align-center">
         <div class="mr-1">Cookie Status:</div>
-        <div class="text-grey">{{ status + (status === CookieStatus.loggedIn ? ' (' + username + ')' : '')}}</div>
+        <div class="text-grey">{{ status + (status === CookieStatus.loggedIn ? ' (' + username + ')' : '') }}</div>
         <div class="ml-2">
           <v-progress-circular
             v-if="status===CookieStatus.checking" indeterminate size="15" width="2"></v-progress-circular>
@@ -59,9 +83,22 @@ onMounted(() => {
         </div>
       </div>
       <v-card class="fill-height">
-        <v-list density="compact">
-          <v-list-item title="Open Bing Chat" @click="openBingChat"></v-list-item>
-          <v-list-item title="Resolve CAPTCHA" @click="resolveCaptcha"></v-list-item>
+        <v-list density="compact" style="font-size: 18px">
+          <v-list-item prepend-icon="mdi-open-in-new" @click="openBingChat">
+            Open Bing Chat
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-robot-vacuum" @click="resolveCaptcha">
+            Resolve CAPTCHA
+          </v-list-item>
+          <v-list-item prepend-icon="mdi-cookie" v-if="status===CookieStatus.loggedIn" @click="updateCookies">
+            <div class="d-flex align-center">
+              <p>
+                Update Cookies to SydneyQt
+              </p>
+              <v-progress-circular v-if="loadingUpdateCookies" class="ml-2" indeterminate size="15"
+                                   width="2"></v-progress-circular>
+            </div>
+          </v-list-item>
         </v-list>
       </v-card>
     </v-container>
