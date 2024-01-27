@@ -13,7 +13,7 @@ The browser extension of [SydneyQt](https://github.com/juzeon/SydneyQt) that ena
 
 **Google Chrome / Microsoft Edge**
 
-1. Download the zip file from [releases](https://github.com/juzeon/SydneyQt-browser-extension/releases).
+1. Download the `build.zip` file from [releases](https://github.com/juzeon/SydneyQt-browser-extension/releases).
 2. Unzip the file to an empty folder.
 3. In Chrome/Edge go to the extensions page (`chrome://extensions` or `edge://extensions`).
 4. Enable Developer Mode.
